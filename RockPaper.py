@@ -6,60 +6,60 @@
 import random
 
 #Variable declaration
-roundNumber = 1
+
 userScore = 0
 CPUScore = 0
+options = ['rock' , 'paper' , 'scissors']
+gameModes = ['random' , 'smart']
+userLastChoice = None
+
+def paperOverRock(CPU,User):
+    if User == "rock" and CPU == "paper":
+        return "lose"
+    return "win"
+
+def scissorsCutPaper(CPU, User):
+    if User == "paper" and CPU == "scissors":
+        return "lose"
+    return "win"
+
+def rockSmashScissors(CPU,User):
+    if User == "scissors" and CPU == "rock":
+        return "lose"
+    return "win"
 
 #functions
 def coreLogic(CPU,User):
-     if User == 'rock' :
-        if CPU == 'rock' :
-            return 'tie'
-        if CPU == 'paper' :
-            return 'lose'
-        if CPU == 'scissors' :
-            return 'win'
-     if User == 'paper' :
-        if CPU == 'rock' :
-            return 'win'
-        if CPU == 'paper' :
-            return 'tie'
-        if CPU == 'scissors' :
-            return 'lose'
-     if User == 'scissors' :
-        if CPU == 'rock' :
-            return 'lose'
-        if CPU == 'paper' :
-            return 'win'
-        if CPU == 'scissors' :
-            return 'tie'
+    if User == CPU :
+        return "tie"
 
-def gameLogic(Difficulty,Choice):
-    global roundNumber
-    global userLastChoice
-    #Smart mode will be random on first round. Stats will be used on round 2 & 3
-    if roundNumber == 1 :
-        Difficulty = 'random'
-    if Difficulty == 'random':
-        #Generate a random selection and return
-        roundNumber +=1
-        userLastChoice = Choice
-        options = ['rock' , 'paper' , 'scissors']
-        CPUChoice = random.choice(options)
-        print("CPU chose " + CPUChoice)
-        return coreLogic(CPUChoice,Choice)
-    if Difficulty == 'smart':
-        #round is the 2nd or 3rd, using stats on last play to win. 
-        roundNumber +=1
-        if userLastChoice == 'rock' :
-            CPUChoice = 'scissors'
-        if userLastChoice == 'paper' :
-            CPUChoice = 'rock'
-        if userLastChoice == 'scissors' :
-            CPUChoice = 'paper'
-        print("CPU chose " + CPUChoice)
-        return coreLogic(CPUChoice,Choice)
-            
+    rockPaper=("paper", "rock")
+    if User in rockPaper and CPU in rockPaper: 
+     return paperOverRock(CPU,User)
+
+    scissorsPaper=("scissors", "paper")
+    if User in scissorsPaper and CPU in scissorsPaper:
+        return scissorsCutPaper(CPU,User)
+
+    rockScissors=("scissors", "rock")
+    if User in rockScissors and CPU in rockScissors:
+        return rockSmashScissors(CPU,User)
+
+def randomMode():
+    CPUChoice = random.choice(options) 
+    print("CPU chose " + CPUChoice)
+    return CPUChoice
+
+def smartMode():
+    beats={
+        "rock": "scissors",
+        "paper": "rock",
+        "scissors": "paper"
+    }
+    CPUChoice = beats[userLastChoice]
+    print("CPU chose " + CPUChoice)
+    return CPUChoice
+        
 def resultProcess(result) :
     global userScore
     global CPUScore
@@ -81,55 +81,49 @@ def scoreProcess() :
         exit()
 
 def inputValidate(choice) :
-    if choice not in ['rock' , 'paper', 'scissors'] :
+    if choice not in options :
         raise Exception('Invalid choice')
+    return choice
 
 #collect input options
 print("Welcome to Gabe's Rock Paper Scissors Game!")
 print("Please enter you name:")
 name = input()
 print("Hello " + name)
-print ("Please select difficulty: random or smart")
-userSelectedDifficulty = input()
-
+print (f"Please select difficulty: {gameModes}")
+Difficulty = input()
 #validate input
-if userSelectedDifficulty not in ['random' , 'smart'] :
+if Difficulty not in gameModes :
     raise Exception('Invalid difficulty')
 
 #collect first round
 print("This game is best out of 3 rounds. Please make your first choice.")
-print("Round number:", roundNumber)
-print("Options are 'rock paper scissors'")
-choice = input()
-inputValidate(choice)
+roundNumber = 1
+while roundNumber < 4:
+    print("Round number:",roundNumber,"Your Score:",userScore,"CPU Score:",CPUScore)
+    print(f"Options are {options}")
+    choice = inputValidate( input() )
+    
+    if Difficulty == 'random':
+        CPUChoice = randomMode()
+        resultProcess( coreLogic(CPUChoice,choice) )
 
-resultProcess(gameLogic(userSelectedDifficulty,choice))
+    if Difficulty == 'smart':
+        if roundNumber == 1:
+            CPUChoice = randomMode()
+            resultProcess( coreLogic(CPUChoice,choice) )
+        else: 
+            CPUChoice = smartMode()
+            resultProcess( coreLogic(CPUChoice,choice) )
 
-#collect second round
-print("Round number:",roundNumber,"Your Score:",userScore,"CPU Score:",CPUScore)
-print("Options are 'rock paper scissors'")
-choice = input()
-inputValidate(choice)
-
-resultProcess(gameLogic(userSelectedDifficulty,choice))
-
-#check if anyone one yet
-scoreProcess()
-
-#Collect last round, assuming nobody won last round
-print("Last Round!","Your Score:",userScore,"CPU Score:",CPUScore)
-print("Options are 'rock paper scissors'")
-choice = input()
-inputValidate(choice)
-
-resultProcess(gameLogic(userSelectedDifficulty,choice))
+    roundNumber +=1
+    scoreProcess()
+    userLastChoice = choice
 
 #find out who won or if tie
 if CPUScore > userScore :
     print(name + " lost out of three rounds! Your father must be disappointed")
-    exit()
 elif CPUScore == userScore :
-    Print(name + " and CPU tied! Please play again :)")
+    print(name + " and CPU tied! Please play again :)")
 else :
     print(name + " won best out of three rounds! Your mother should be proud!")
-    exit()
