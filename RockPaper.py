@@ -33,11 +33,6 @@ def randomMode():
     return CPUChoice
 
 def smartMode():
-    beats={
-        "rock": "scissors",
-        "paper": "rock",
-        "scissors": "paper"
-    }
     CPUChoice = beats[userLastChoice]
     print("CPU chose " + CPUChoice)
     return CPUChoice
