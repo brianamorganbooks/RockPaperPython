@@ -12,38 +12,20 @@ CPUScore = 0
 options = ['rock' , 'paper' , 'scissors']
 gameModes = ['random' , 'smart']
 userLastChoice = None
-
-def paperOverRock(CPU,User):
-    if User == "rock" and CPU == "paper":
-        return "lose"
-    return "win"
-
-def scissorsCutPaper(CPU, User):
-    if User == "paper" and CPU == "scissors":
-        return "lose"
-    return "win"
-
-def rockSmashScissors(CPU,User):
-    if User == "scissors" and CPU == "rock":
-        return "lose"
-    return "win"
+beats={
+    "rock": "scissors",
+    "paper": "rock",
+    "scissors": "paper"
+}
 
 #functions
 def coreLogic(CPU,User):
     if User == CPU :
         return "tie"
-
-    rockPaper=("paper", "rock")
-    if User in rockPaper and CPU in rockPaper: 
-     return paperOverRock(CPU,User)
-
-    scissorsPaper=("scissors", "paper")
-    if User in scissorsPaper and CPU in scissorsPaper:
-        return scissorsCutPaper(CPU,User)
-
-    rockScissors=("scissors", "rock")
-    if User in rockScissors and CPU in rockScissors:
-        return rockSmashScissors(CPU,User)
+    if beats[CPU] != User:
+        return "lose"
+    else:
+        return "win"
 
 def randomMode():
     CPUChoice = random.choice(options) 
@@ -51,11 +33,6 @@ def randomMode():
     return CPUChoice
 
 def smartMode():
-    beats={
-        "rock": "scissors",
-        "paper": "rock",
-        "scissors": "paper"
-    }
     CPUChoice = beats[userLastChoice]
     print("CPU chose " + CPUChoice)
     return CPUChoice
