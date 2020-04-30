@@ -22,7 +22,7 @@ beats={
 def coreLogic(CPU,User):
     if User == CPU :
         return "tie"
-    if beats[CPU] != User:
+    if beats[CPU] == User:
         return "lose"
     else:
         return "win"
