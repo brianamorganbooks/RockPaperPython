@@ -64,7 +64,7 @@ def inputValidate(choice) :
 
 #collect input options
 print("Welcome to Gabe's Rock Paper Scissors Game!")
-print("Please enter you name:")
+print("Please enter your name:")
 name = input()
 print("Hello " + name)
 print (f"Please select difficulty: {gameModes}")
