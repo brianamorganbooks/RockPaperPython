@@ -1,5 +1,5 @@
 # Rock Paper Python V1.0
-# Written by Gabe Conway 4/23/2020
+# Written by Briana Morgan 6/4/20
 # Standard rock paper scissors game with two AI modes, best out of three rounds. Random mode will choose a random selection.
 # Smart mode will base its choice on statistics. The strategy is based on experiments of Zhejiang University.
 
@@ -51,10 +51,10 @@ def resultProcess(result) :
         
 def scoreProcess() :
     if userScore == 2 :
-        print(name + " won 2 out of three rounds! Your mother should be proud!")
+        print(name + " won 2 out of three rounds! You're awesome!")
         exit()
     elif CPUScore == 2 :
-        print(name + " lost out of three rounds! Your father must be disappointed")
+        print(name + " lost out of three rounds! Oh, dear...")
         exit()
 
 def inputValidate(choice) :
@@ -63,8 +63,8 @@ def inputValidate(choice) :
     return choice
 
 #collect input options
-print("Welcome to Gabe's Rock Paper Scissors Game!")
-print("Please enter you name:")
+print("Welcome to Briana's Rock Paper Scissors Game!")
+print("Please enter your name:")
 name = input()
 print("Hello " + name)
 print (f"Please select difficulty: {gameModes}")
@@ -99,8 +99,8 @@ while roundNumber < 4:
 
 #find out who won or if tie
 if CPUScore > userScore :
-    print(name + " lost out of three rounds! Your father must be disappointed")
+    print(name + " lost out of three rounds! Yikes.")
 elif CPUScore == userScore :
     print(name + " and CPU tied! Please play again :)")
 else :
-    print(name + " won best out of three rounds! Your mother should be proud!")
+    print(name + " won best out of three rounds! Way to go!")
